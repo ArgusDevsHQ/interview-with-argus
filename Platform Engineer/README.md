@@ -73,9 +73,9 @@ Budget 2 to 4 hours. You may add dependencies; say why.
 
 ## On AI assistance
 
-Using AI for the code and the investigation is fine.
+Using AI for the code and the investigation is fine. Getting the solution right should be trivial easy that way.
 
-`FINDINGS.md` is different. It is the deliverable we read, and it is the only
+However, `FINDINGS.md` is different. It is the deliverable we read, and it is the only
 part of this exercise that tells us how you think. A submission without it is
 disqualified. A `FINDINGS.md` that reads as generated will be treated the same
 way. Write it yourself: your evidence, your numbers, your wrong turns, in your
