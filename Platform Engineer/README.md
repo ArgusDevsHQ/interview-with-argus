@@ -52,18 +52,21 @@ day. Run it before and after your fix. It takes a couple of minutes.
 
 ## Deliverables
 
-Put everything in a `FINDINGS.md` next to this file, commit your fix on a
-branch, and send us the branch.
+Put everything in a `FINDINGS.md` next to this file and commit your fix on a
+branch. To send it to us, either push the branch to a fork and open a pull
+request there, or email the patch (`git format-patch main`) to
+aman@getargus.tech.
 
-1. Proof of what stopped the order, captured during a live reproduction: the
-   backend PID that was holding it, the identity of what it held, and the
-   measured duration of the critical section.
+1. Evidence of what blocked the order, captured live rather than reasoned
+   about, and the measured duration of whatever was blocking it.
 2. A before/after Mermaid sequence diagram of the order path and the stock
    update.
-3. Measured numbers, before and after your fix: how long the order waited, the
-   critical-section duration, and order-endpoint p50/p95 while an update is
-   running.
+3. Measured numbers, before and after your fix: how long the order waited, how
+   long the blocking operation held things up, and order-endpoint p50/p95
+   while an update is running.
 4. A short write-up: what you tried that turned out to be wrong, and what breaks
    if the stock update runs for 10 minutes.
 
-Budget 2 to 4 hours. AI assistance is fine.
+If you run out of time, tell us what you would have done next.
+
+Budget 2 to 4 hours. AI assistance is fine. You may add dependencies; say why.

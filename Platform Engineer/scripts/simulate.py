@@ -4,16 +4,18 @@ import json
 import os
 import random
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from queue import Queue
 
 API_URL = os.environ.get("API_URL", "http://localhost:8000")
 ORDER_EVERY_SECONDS = 1.0
 CONTROL_ORDERS = 3
 MAX_WAIT_SECONDS = 15 * 60
+REQUEST_DEADLINE_SECONDS = 60
 NAMES = ["Ines", "Tom", "Aiko", "Dev", "Lena", "Marcus", "Sofia", "Jun", "Priya", "Owen", "Hana", "Luis"]
 
 
@@ -24,7 +26,7 @@ def call(method: str, path: str, body: dict | None = None) -> tuple[int, dict, f
     )
     started = time.perf_counter()
     try:
-        with urllib.request.urlopen(request, timeout=60) as response:
+        with urllib.request.urlopen(request, None, REQUEST_DEADLINE_SECONDS) as response:
             return response.status, json.load(response), time.perf_counter() - started
     except urllib.error.HTTPError as error:
         return error.code, json.load(error), time.perf_counter() - started
@@ -106,16 +108,20 @@ def main() -> int:
 
     wait_until(running, "restocking", "queued")
     started = time.time()
-    pending = []
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        while True:
-            run = latest_run()
-            if run["id"] == run_id and run["status"] != "running":
-                break
-            line("restocking", f"running ({time.time() - started:.0f} s), {len(pending)} orders placed", end="")
-            pending.append(pool.submit(place_order, products))
-            time.sleep(ORDER_EVERY_SECONDS)
-    during = [future.result() for future in pending]
+    results: Queue = Queue()
+    threads: list[threading.Thread] = []
+    while True:
+        run = latest_run()
+        if run["id"] == run_id and run["status"] != "running":
+            break
+        line("restocking", f"running ({time.time() - started:.0f} s), {len(threads)} orders placed", end="")
+        thread = threading.Thread(target=lambda: results.put(place_order(products)), daemon=True)
+        thread.start()
+        threads.append(thread)
+        time.sleep(ORDER_EVERY_SECONDS)
+    for thread in threads:
+        thread.join()
+    during = [results.get() for _ in threads]
     restock_seconds = seconds_between(run["started_at"], run["finished_at"])
     line("restocking", f"{run['status']} in {restock_seconds:.0f} s, {run['movements_replayed'] or 0:,} movements replayed")
 

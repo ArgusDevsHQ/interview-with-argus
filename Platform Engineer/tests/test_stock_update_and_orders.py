@@ -22,12 +22,12 @@ def running_stock_update(shop_id, db):
 
     thread = threading.Thread(target=run, name="stock-update", daemon=True)
     thread.start()
-    wait_for_update_status(db, shop_id, {"running"}, timeout=30)
+    wait_for_update_status(db, shop_id, {"running"}, give_up_after=30)
     # Give the update a moment to get past its bookkeeping and into the replay.
     time.sleep(2)
     yield
     update_conn.cancel_safe()
-    thread.join(timeout=30)
+    thread.join(30)
     update_conn.close()
 
 

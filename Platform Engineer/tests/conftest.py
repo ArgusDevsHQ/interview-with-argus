@@ -12,19 +12,19 @@ from app.main import app
 from app.store.stock_updates import StockUpdateStore
 from scripts import seed
 
-UPDATE_SETTLE_TIMEOUT_SECONDS = 240
+UPDATE_SETTLE_SECONDS = 240
 
 
 def connect(autocommit: bool = False) -> psycopg.Connection:
     return psycopg.connect(config.DATABASE_URL, row_factory=dict_row, autocommit=autocommit)
 
 
-def wait_for_update_status(conn, shop_id: int, expected: set[str | None], timeout: float) -> None:
-    deadline = time.monotonic() + timeout
+def wait_for_update_status(conn, shop_id: int, expected: set[str | None], give_up_after: float) -> None:
+    deadline = time.monotonic() + give_up_after
     runs = StockUpdateStore()
     while runs.latest_status(conn, shop_id) not in expected:
         if time.monotonic() > deadline:
-            raise TimeoutError(f"stock update for shop {shop_id} did not reach {expected}")
+            raise RuntimeError(f"stock update for shop {shop_id} did not reach {expected}")
         time.sleep(0.2)
 
 
@@ -37,7 +37,7 @@ def shop_id() -> int:
                 seed.run(conn)
             row = conn.execute("SELECT id FROM shops ORDER BY id LIMIT 1").fetchone()
         # The worker may be mid-update when the session starts; wait for a quiet baseline.
-        wait_for_update_status(conn, row["id"], {None, "completed", "failed"}, UPDATE_SETTLE_TIMEOUT_SECONDS)
+        wait_for_update_status(conn, row["id"], {None, "completed", "failed"}, UPDATE_SETTLE_SECONDS)
         return row["id"]
 
 
