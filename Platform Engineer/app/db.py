@@ -5,8 +5,8 @@ from psycopg_pool import ConnectionPool
 
 from app import config
 
-API_CONNECTION_OPTIONS = "-c application_name=finance-api -c lock_timeout=5s"
-SYNC_CONNECTION_OPTIONS = "-c application_name=finance-sync"
+API_CONNECTION_OPTIONS = "-c application_name=roasters-api -c lock_timeout=5s"
+WORKER_CONNECTION_OPTIONS = "-c application_name=roasters-worker"
 
 
 def create_pool(options: str, min_size: int = 1, max_size: int = 8) -> ConnectionPool:

@@ -1,21 +1,23 @@
-# ABOUTME: FastAPI application for the household finance API.
-# ABOUTME: Wires routers, the connection pool, correlation ids, and error responses.
+# ABOUTME: FastAPI application for the Larkspur Roasters storefront.
+# ABOUTME: Wires routers, the connection pool, correlation ids, error responses, and the page.
 import logging
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import psycopg
 import uvicorn
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 from app import config, db
-from app.api import holdings, households
+from app.api import orders, products, stock_update
 from app.logs import configure_logging, correlation_id
 
-log = logging.getLogger("finance.api")
+log = logging.getLogger("roasters.api")
 
 BUSY_MESSAGE = "Things are busy right now. Try again in a moment."
+PAGE = Path(__file__).parent / "static" / "index.html"
 
 
 @asynccontextmanager
@@ -28,9 +30,10 @@ async def lifespan(app: FastAPI):
         app.state.pool.close()
 
 
-app = FastAPI(title="Household Finance API", lifespan=lifespan)
-app.include_router(holdings.router)
-app.include_router(households.router)
+app = FastAPI(title="Larkspur Roasters", lifespan=lifespan)
+app.include_router(products.router)
+app.include_router(orders.router)
+app.include_router(stock_update.router)
 
 
 @app.middleware("http")
@@ -60,6 +63,11 @@ async def database_unavailable(request: Request, exc: psycopg.OperationalError):
         status_code=503,
         content={"detail": BUSY_MESSAGE, "correlation_id": correlation_id.get()},
     )
+
+
+@app.get("/", include_in_schema=False)
+def page() -> FileResponse:
+    return FileResponse(PAGE, media_type="text/html")
 
 
 @app.get("/health")

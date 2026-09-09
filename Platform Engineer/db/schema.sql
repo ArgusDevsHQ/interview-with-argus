@@ -1,84 +1,96 @@
--- ABOUTME: Schema for the household finance service.
+-- ABOUTME: Schema for the Larkspur Roasters storefront.
 -- ABOUTME: Applied automatically when the Postgres container initialises an empty data volume.
 
-CREATE TABLE households (
+CREATE TABLE shops (
+    id    bigserial PRIMARY KEY,
+    name  text NOT NULL
+);
+
+CREATE TABLE products (
+    id           bigserial PRIMARY KEY,
+    shop_id      bigint NOT NULL REFERENCES shops (id),
+    sku          text NOT NULL UNIQUE,
+    name         text NOT NULL,
+    notes        text NOT NULL DEFAULT '',
+    price_cents  integer NOT NULL,
+    featured     boolean NOT NULL DEFAULT false
+);
+
+CREATE INDEX products_shop_featured_idx ON products (shop_id, featured);
+
+CREATE TABLE scanner_counts (
     id          bigserial PRIMARY KEY,
-    name        text NOT NULL,
+    product_id  bigint NOT NULL REFERENCES products (id),
+    counted_on  date NOT NULL,
+    quantity    integer NOT NULL
+);
+
+CREATE TABLE stock_movements (
+    id               bigserial PRIMARY KEY,
+    shop_id          bigint NOT NULL REFERENCES shops (id),
+    product_id       bigint NOT NULL REFERENCES products (id),
+    moved_at         timestamptz NOT NULL,
+    kind             text NOT NULL CHECK (kind IN ('received', 'sold', 'adjusted')),
+    quantity         integer NOT NULL,
+    unit_cost_cents  integer,
+    created_at       timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX stock_movements_shop_moved_at_idx ON stock_movements (shop_id, moved_at);
+
+CREATE TABLE stock_levels (
+    product_id   bigint PRIMARY KEY REFERENCES products (id),
+    on_hand      integer NOT NULL,
+    value_cents  bigint NOT NULL,
+    computed_at  timestamptz NOT NULL
+);
+
+CREATE TABLE cost_layers (
+    id                  bigserial PRIMARY KEY,
+    product_id          bigint NOT NULL REFERENCES products (id),
+    movement_id         bigint NOT NULL REFERENCES stock_movements (id),
+    quantity_remaining  integer NOT NULL,
+    unit_cost_cents     integer NOT NULL
+);
+
+CREATE INDEX cost_layers_product_idx ON cost_layers (product_id);
+
+CREATE TABLE stock_checks (
+    id                bigserial PRIMARY KEY,
+    shop_id           bigint NOT NULL REFERENCES shops (id),
+    movement_id       bigint NOT NULL REFERENCES stock_movements (id),
+    product_id        bigint NOT NULL REFERENCES products (id),
+    counted_on        date NOT NULL,
+    ledger_quantity   integer NOT NULL,
+    scanned_quantity  integer
+);
+
+CREATE INDEX stock_checks_shop_idx ON stock_checks (shop_id);
+
+CREATE TABLE orders (
+    id          bigserial PRIMARY KEY,
+    shop_id     bigint NOT NULL REFERENCES shops (id),
+    product_id  bigint NOT NULL REFERENCES products (id),
+    quantity    integer NOT NULL CHECK (quantity > 0),
+    customer    text NOT NULL DEFAULT 'web',
     created_at  timestamptz NOT NULL DEFAULT now()
 );
 
-CREATE TABLE instruments (
-    id           bigserial PRIMARY KEY,
-    symbol       text NOT NULL UNIQUE,
-    name         text NOT NULL,
-    asset_class  text NOT NULL
+CREATE INDEX orders_shop_created_at_idx ON orders (shop_id, created_at);
+
+CREATE TABLE stock_updates (
+    id                  bigserial PRIMARY KEY,
+    shop_id             bigint NOT NULL REFERENCES shops (id),
+    status              text NOT NULL CHECK (status IN ('requested', 'running', 'completed', 'failed')),
+    requested_at        timestamptz NOT NULL DEFAULT now(),
+    started_at          timestamptz,
+    finished_at         timestamptz,
+    movements_replayed  integer
 );
 
-CREATE TABLE prices (
-    id             bigserial PRIMARY KEY,
-    instrument_id  bigint NOT NULL REFERENCES instruments (id),
-    as_of          date NOT NULL,
-    close          numeric(18, 4) NOT NULL
+CREATE INDEX stock_updates_shop_requested_at_idx ON stock_updates (shop_id, requested_at DESC);
+
+CREATE TABLE stock_update_schedule (
+    shop_id      bigint PRIMARY KEY REFERENCES shops (id),
+    next_run_at  timestamptz NOT NULL
 );
-
-CREATE TABLE transactions (
-    id             bigserial PRIMARY KEY,
-    household_id   bigint NOT NULL REFERENCES households (id),
-    instrument_id  bigint NOT NULL REFERENCES instruments (id),
-    traded_at      date NOT NULL,
-    side           text NOT NULL CHECK (side IN ('buy', 'sell')),
-    quantity       numeric(18, 6) NOT NULL CHECK (quantity > 0),
-    price          numeric(18, 4) NOT NULL,
-    created_at     timestamptz NOT NULL DEFAULT now()
-);
-
-CREATE INDEX transactions_household_traded_at_idx ON transactions (household_id, traded_at);
-
-CREATE TABLE holdings (
-    id             bigserial PRIMARY KEY,
-    household_id   bigint NOT NULL REFERENCES households (id),
-    instrument_id  bigint NOT NULL REFERENCES instruments (id),
-    quantity       numeric(18, 6) NOT NULL CHECK (quantity > 0),
-    cost_basis     numeric(18, 4),
-    source         text NOT NULL DEFAULT 'manual',
-    created_at     timestamptz NOT NULL DEFAULT now()
-);
-
-CREATE INDEX holdings_household_idx ON holdings (household_id);
-
-CREATE TABLE provider_positions (
-    household_id   bigint NOT NULL REFERENCES households (id),
-    instrument_id  bigint NOT NULL REFERENCES instruments (id),
-    quantity       numeric(18, 6) NOT NULL,
-    as_of          timestamptz NOT NULL,
-    PRIMARY KEY (household_id, instrument_id)
-);
-
-CREATE TABLE position_ledger (
-    id              bigserial PRIMARY KEY,
-    household_id    bigint NOT NULL REFERENCES households (id),
-    instrument_id   bigint NOT NULL REFERENCES instruments (id),
-    transaction_id  bigint NOT NULL REFERENCES transactions (id),
-    as_of           date NOT NULL,
-    quantity        numeric(18, 6) NOT NULL,
-    market_value    numeric(18, 2) NOT NULL
-);
-
-CREATE INDEX position_ledger_household_as_of_idx ON position_ledger (household_id, as_of);
-
-CREATE TABLE valuation_snapshots (
-    household_id  bigint PRIMARY KEY REFERENCES households (id),
-    total_value   numeric(18, 2) NOT NULL,
-    computed_at   timestamptz NOT NULL
-);
-
-CREATE TABLE sync_runs (
-    id                bigserial PRIMARY KEY,
-    household_id      bigint NOT NULL REFERENCES households (id),
-    status            text NOT NULL CHECK (status IN ('running', 'completed', 'failed')),
-    started_at        timestamptz NOT NULL DEFAULT now(),
-    finished_at       timestamptz,
-    positions_synced  integer
-);
-
-CREATE INDEX sync_runs_household_started_at_idx ON sync_runs (household_id, started_at DESC);

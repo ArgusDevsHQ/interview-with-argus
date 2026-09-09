@@ -3,7 +3,8 @@
 import os
 
 DATABASE_URL = os.environ.get(
-    "DATABASE_URL", "postgresql://finance:finance@localhost:5433/finance"
+    "DATABASE_URL", "postgresql://roasters:roasters@localhost:5433/roasters"
 )
-SYNC_INTERVAL_SECONDS = int(os.environ.get("SYNC_INTERVAL_SECONDS", "600"))
+STOCK_UPDATE_INTERVAL_SECONDS = int(os.environ.get("STOCK_UPDATE_INTERVAL_SECONDS", "300"))
 PORT = int(os.environ.get("PORT", "8000"))
+STOCK_UPDATE_POLL_SECONDS = float(os.environ.get("STOCK_UPDATE_POLL_SECONDS", "2"))

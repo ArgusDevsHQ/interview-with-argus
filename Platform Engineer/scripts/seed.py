@@ -1,10 +1,9 @@
-# ABOUTME: Populates the database with one household, an instrument universe, daily price
-# ABOUTME: history, and the household's transaction history. Re-running replaces the data.
+# ABOUTME: Populates the database with one shop, its product catalogue, daily shelf scanner
+# ABOUTME: counts, and the shop's stock movement history. Re-running replaces the data.
 import logging
 import random
 import string
-from datetime import date, timedelta
-from decimal import Decimal
+from datetime import date, datetime, time, timedelta, timezone
 
 import psycopg
 from psycopg import Connection
@@ -13,23 +12,24 @@ from psycopg.rows import dict_row
 from app import config
 from app.logs import configure_logging
 
-log = logging.getLogger("finance.seed")
+log = logging.getLogger("roasters.seed")
 
-HOUSEHOLD_NAME = "Okafor household"
-NAMED_INSTRUMENTS = [
-    ("VTI", "Total Stock Market ETF", "equity"),
-    ("VXUS", "Total International Stock ETF", "equity"),
-    ("BND", "Total Bond Market ETF", "fixed_income"),
-    ("QQQ", "Nasdaq 100 ETF", "equity"),
-    ("AAPL", "Apple Inc.", "equity"),
-    ("MSFT", "Microsoft Corporation", "equity"),
+SHOP_NAME = "Larkspur Roasters, Northgate"
+FEATURED = [
+    ("HOLLOW-CREEK", "Hollow Creek", "Washed Ethiopia · jasmine, peach", 1650),
+    ("NIGHT-FREIGHT", "Night Freight", "Espresso blend · cocoa, fig", 1500),
+    ("SUNDAY-PAPER", "Sunday Paper", "Colombia · caramel, red apple", 1400),
+    ("LOW-TIDE", "Low Tide", "Decaf Brazil · hazelnut, honey", 1400),
+    ("COPPER-KETTLE", "Copper Kettle", "Guatemala · toffee, orange", 1550),
+    ("FOG-LINE", "Fog Line", "Kenya · blackcurrant, lime", 1700),
+    ("BACKROAD", "Backroad", "Peru · milk chocolate, plum", 1350),
+    ("LATE-HARVEST", "Late Harvest", "Natural Ethiopia · strawberry, cream", 1800),
 ]
-INSTRUMENT_COUNT = 800
-HISTORY_START = date(2016, 1, 4)
-HISTORY_END = date(2025, 12, 31)
-TRANSACTION_COUNT = 1200
-TRADED_INSTRUMENTS = 40
-MANUAL_HOLDINGS = [("VTI", Decimal("25"), Decimal("4100.00")), ("BND", Decimal("40"), Decimal("2900.00"))]
+PRODUCT_COUNT = 800
+COUNT_HISTORY_START = date(2016, 1, 4)
+COUNT_HISTORY_END = date(2025, 12, 31)
+MOVEMENT_COUNT = 1240
+MOVEMENT_HISTORY_DAYS = 365
 SEED = 20240901
 
 
@@ -43,99 +43,85 @@ def trading_days(start: date, end: date) -> list[date]:
     return days
 
 
-def instrument_rows(rng: random.Random) -> list[tuple[str, str, str]]:
-    rows = list(NAMED_INSTRUMENTS)
-    seen = {symbol for symbol, _, _ in rows}
-    while len(rows) < INSTRUMENT_COUNT:
-        symbol = "".join(rng.choices(string.ascii_uppercase, k=4))
-        if symbol in seen:
+def catalogue(rng: random.Random) -> list[tuple[str, str, str, int, bool]]:
+    rows = [(sku, name, notes, price, True) for sku, name, notes, price in FEATURED]
+    seen = {sku for sku, *_ in rows}
+    kinds = ["green lot", "wholesale 1 kg", "filter papers", "mug", "gift box", "cold brew"]
+    while len(rows) < PRODUCT_COUNT:
+        sku = "".join(rng.choices(string.ascii_uppercase, k=3)) + "-" + str(rng.randint(100, 999))
+        if sku in seen:
             continue
-        seen.add(symbol)
-        asset_class = rng.choice(["equity", "equity", "fixed_income", "commodity"])
-        rows.append((symbol, f"{symbol} Fund", asset_class))
+        seen.add(sku)
+        rows.append((sku, f"{rng.choice(kinds).title()} {sku}", "", rng.randint(400, 6000), False))
     return rows
 
 
-def price_walk(rng: random.Random, days: list[date]) -> list[Decimal]:
-    level = rng.uniform(15, 400)
-    closes = []
+def count_walk(rng: random.Random, days: list[date]) -> list[int]:
+    level = rng.randint(5, 60)
+    counts = []
     for _ in days:
-        level *= 1 + rng.gauss(0.0003, 0.012)
-        level = max(level, 0.5)
-        closes.append(Decimal(f"{level:.4f}"))
-    return closes
+        level = max(0, level + rng.randint(-3, 3))
+        counts.append(level)
+    return counts
 
 
 def run(conn: Connection) -> dict:
     rng = random.Random(SEED)
-    days = trading_days(HISTORY_START, HISTORY_END)
+    days = trading_days(COUNT_HISTORY_START, COUNT_HISTORY_END)
 
     conn.execute(
         """
-        TRUNCATE sync_runs, valuation_snapshots, position_ledger, provider_positions,
-                 holdings, transactions, prices, instruments, households
+        TRUNCATE stock_update_schedule, stock_updates, orders, stock_checks, cost_layers,
+                 stock_levels, stock_movements, scanner_counts, products, shops
         RESTART IDENTITY CASCADE
         """
     )
-    household_id = conn.execute(
-        "INSERT INTO households (name) VALUES (%s) RETURNING id", (HOUSEHOLD_NAME,)
-    ).fetchone()["id"]
+    shop_id = conn.execute("INSERT INTO shops (name) VALUES (%s) RETURNING id", (SHOP_NAME,)).fetchone()["id"]
 
-    instrument_ids: dict[str, int] = {}
+    product_ids: list[int] = []
     with conn.cursor() as cur:
-        for symbol, name, asset_class in instrument_rows(rng):
+        for sku, name, notes, price, featured in catalogue(rng):
             cur.execute(
-                "INSERT INTO instruments (symbol, name, asset_class) VALUES (%s, %s, %s) RETURNING id",
-                (symbol, name, asset_class),
+                "INSERT INTO products (shop_id, sku, name, notes, price_cents, featured) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+                (shop_id, sku, name, notes, price, featured),
             )
-            instrument_ids[symbol] = cur.fetchone()["id"]
+            product_ids.append(cur.fetchone()["id"])
 
-    closes_by_symbol: dict[str, list[Decimal]] = {}
     with conn.cursor() as cur:
-        with cur.copy("COPY prices (instrument_id, as_of, close) FROM STDIN") as copy:
-            for symbol, instrument_id in instrument_ids.items():
-                closes = price_walk(rng, days)
-                closes_by_symbol[symbol] = closes
-                for day, close in zip(days, closes):
-                    copy.write_row((instrument_id, day, close))
-    price_count = len(instrument_ids) * len(days)
+        with cur.copy("COPY scanner_counts (product_id, counted_on, quantity) FROM STDIN") as copy:
+            for product_id in product_ids:
+                for day, count in zip(days, count_walk(rng, days)):
+                    copy.write_row((product_id, day, count))
+    count_rows = len(product_ids) * len(days)
 
-    traded_symbols = list(instrument_ids)[:TRADED_INSTRUMENTS]
+    moved_products = product_ids[:40]
+    on_hand = {product_id: 0 for product_id in moved_products}
+    end = datetime.combine(COUNT_HISTORY_END, time(18, 0), tzinfo=timezone.utc)
+    stamps = sorted(
+        end - timedelta(seconds=rng.randint(0, MOVEMENT_HISTORY_DAYS * 86400)) for _ in range(MOVEMENT_COUNT)
+    )
     with conn.cursor() as cur:
-        for _ in range(TRANSACTION_COUNT):
-            symbol = rng.choice(traded_symbols)
-            day_index = rng.randrange(len(days))
-            side = "buy" if rng.random() < 0.7 else "sell"
-            quantity = Decimal(rng.randint(1, 50))
+        for moved_at in stamps:
+            product_id = rng.choice(moved_products)
+            if on_hand[product_id] < 8 or rng.random() < 0.12:
+                kind, quantity, unit_cost = "received", rng.randint(12, 36), rng.randint(500, 1400)
+            else:
+                kind, quantity, unit_cost = "sold", -rng.randint(1, min(6, on_hand[product_id])), None
+            on_hand[product_id] += quantity
             cur.execute(
-                """
-                INSERT INTO transactions (household_id, instrument_id, traded_at, side, quantity, price)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                """,
-                (
-                    household_id,
-                    instrument_ids[symbol],
-                    days[day_index],
-                    side,
-                    quantity,
-                    closes_by_symbol[symbol][day_index],
-                ),
+                "INSERT INTO stock_movements (shop_id, product_id, moved_at, kind, quantity, unit_cost_cents) VALUES (%s, %s, %s, %s, %s, %s)",
+                (shop_id, product_id, moved_at, kind, quantity, unit_cost),
             )
-        for symbol, quantity, cost_basis in MANUAL_HOLDINGS:
-            cur.execute(
-                """
-                INSERT INTO holdings (household_id, instrument_id, quantity, cost_basis, source)
-                VALUES (%s, %s, %s, %s, 'manual')
-                """,
-                (household_id, instrument_ids[symbol], quantity, cost_basis),
-            )
+        cur.executemany(
+            "INSERT INTO stock_levels (product_id, on_hand, value_cents, computed_at) VALUES (%s, %s, 0, now())",
+            [(product_id, quantity) for product_id, quantity in on_hand.items()],
+        )
 
     return {
-        "household_id": household_id,
-        "instruments": len(instrument_ids),
-        "prices": price_count,
-        "transactions": TRANSACTION_COUNT,
-        "holdings": len(MANUAL_HOLDINGS),
+        "shop_id": shop_id,
+        "products": len(product_ids),
+        "scanner_counts": count_rows,
+        "movements": MOVEMENT_COUNT,
     }
 
 
