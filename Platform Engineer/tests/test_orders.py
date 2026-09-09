@@ -8,13 +8,6 @@ def test_health(client):
     assert response.json() == {"status": "ok"}
 
 
-def test_root_serves_the_storefront(client):
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.headers["content-type"].startswith("text/html")
-    assert "Larkspur Roasters" in response.text
-
-
 def test_list_products_returns_featured_products_with_stock(client, shop_id):
     response = client.get("/api/v1/products")
     assert response.status_code == 200

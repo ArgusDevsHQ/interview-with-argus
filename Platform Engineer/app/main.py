@@ -1,14 +1,13 @@
 # ABOUTME: FastAPI application for the Larkspur Roasters storefront.
-# ABOUTME: Wires routers, the connection pool, correlation ids, error responses, and the page.
+# ABOUTME: Wires routers, the connection pool, correlation ids, and error responses.
 import logging
 import uuid
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 import psycopg
 import uvicorn
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import JSONResponse
 
 from app import config, db
 from app.api import orders, products, stock_check, stock_update
@@ -17,7 +16,6 @@ from app.logs import configure_logging, correlation_id
 log = logging.getLogger("roasters.api")
 
 BUSY_MESSAGE = "Things are busy right now. Try again in a moment."
-PAGE = Path(__file__).parent / "static" / "index.html"
 
 
 @asynccontextmanager
@@ -64,11 +62,6 @@ async def database_unavailable(request: Request, exc: psycopg.OperationalError):
         status_code=503,
         content={"detail": BUSY_MESSAGE, "correlation_id": correlation_id.get()},
     )
-
-
-@app.get("/", include_in_schema=False)
-def page() -> FileResponse:
-    return FileResponse(PAGE, media_type="text/html")
 
 
 @app.get("/health")

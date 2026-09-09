@@ -21,9 +21,7 @@ docker compose up -d --build
 docker compose run --rm api python -m scripts.seed
 ```
 
-- Simulation: http://localhost:8000. It places real orders while the shop
-  restocks and tells you what was lost. Run it before and after your fix.
-  API docs at `/docs`.
+- API at http://localhost:8000, docs at `/docs`.
 - Postgres: `localhost:5433`, user, password, and database are all `roasters`.
   `docker compose exec db psql -U roasters` also works.
 - If a port is taken, set `API_PORT` or `DB_PORT` in your environment.
@@ -41,6 +39,16 @@ docker compose run --rm api pytest
 
 `tests/test_stock_update_and_orders.py` fails. Make it pass without changing
 the test.
+
+## Run the simulation
+
+```sh
+docker compose run --rm api python -m scripts.simulate
+```
+
+It places real orders while the shop restocks, then checks the stock counts
+against the ledger, and prints what a shop owner would read at the end of the
+day. Run it before and after your fix. It takes a couple of minutes.
 
 ## Deliverables
 

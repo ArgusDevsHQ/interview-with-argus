@@ -21,6 +21,7 @@ services:
     command: python -m app.main
     environment:
       DATABASE_URL: postgresql://roasters:roasters@db:5432/roasters
+      API_URL: http://api:8000
     ports:
       - "${API_PORT:-8000}:8000"
     volumes:
