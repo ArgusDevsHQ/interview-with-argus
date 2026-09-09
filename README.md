@@ -16,11 +16,10 @@ The process typically consists of three main stages:
    - A take-home screening based on the role.
    - This particular repo contains screening tasks for all roles.
 
-3. On-site Technical Interview
+3. Technical Interview
    - If there's strong mutual interest, we'll invite you to spend a day working with our team
-   - We'll cover your travel expenses and arrange the visit at your convenience
+   - We'll cover your travel expenses and arrange the visit at your convenience (if it's onsite)
    - The day includes hands-on technical work with our team
-   - *As part of our commitment to open source, we'll donate the equivalent of one day's pay to an open-source project of your choice*
 
 4. Final Discussion
    - We'll review compensation and logistics
