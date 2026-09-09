@@ -37,7 +37,7 @@ class StockUpdateStore:
 
     def finish(self, conn: Connection, run_id: int, status: str, movements_replayed: int) -> None:
         conn.execute(
-            "UPDATE stock_updates SET status = %s, finished_at = now(), movements_replayed = %s WHERE id = %s",
+            "UPDATE stock_updates SET status = %s, finished_at = clock_timestamp(), movements_replayed = %s WHERE id = %s",
             (status, movements_replayed, run_id),
         )
 

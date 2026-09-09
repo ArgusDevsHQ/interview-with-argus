@@ -7,9 +7,11 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 
 API_URL = os.environ.get("API_URL", "http://localhost:8000")
-ORDER_EVERY_SECONDS = 2.0
+ORDER_EVERY_SECONDS = 1.0
 CONTROL_ORDERS = 3
 MAX_WAIT_SECONDS = 15 * 60
 NAMES = ["Ines", "Tom", "Aiko", "Dev", "Lena", "Marcus", "Sofia", "Jun", "Priya", "Owen", "Hana", "Luis"]
@@ -58,9 +60,15 @@ def line(label: str, text: str, end: str = "\n") -> None:
     print(f"\r  {label:<24}{text:<60}", flush=True)
 
 
-def percentile(values: list[float], fraction: float) -> float:
+def percentile(values: list[float], fraction: float) -> str:
+    if not values:
+        return "–"
     ordered = sorted(values)
-    return ordered[min(len(ordered) - 1, int(fraction * len(ordered)))]
+    return f"{ordered[min(len(ordered) - 1, int(fraction * len(ordered)))]:.2f} s"
+
+
+def seconds_between(start: str, end: str) -> float:
+    return (datetime.fromisoformat(end) - datetime.fromisoformat(start)).total_seconds()
 
 
 def wait_until(predicate, label: str, text: str) -> float:
@@ -98,23 +106,24 @@ def main() -> int:
 
     wait_until(running, "restocking", "queued")
     started = time.time()
-    during: list[tuple[int, float]] = []
-    while True:
-        run = latest_run()
-        if run["id"] == run_id and run["status"] != "running":
-            break
-        line("restocking", f"running ({time.time() - started:.0f} s), {len(during)} orders placed", end="")
-        status, took = place_order(products)
-        during.append((status, took))
-        time.sleep(max(0.0, ORDER_EVERY_SECONDS - took))
-    restock_seconds = time.time() - started
+    pending = []
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        while True:
+            run = latest_run()
+            if run["id"] == run_id and run["status"] != "running":
+                break
+            line("restocking", f"running ({time.time() - started:.0f} s), {len(pending)} orders placed", end="")
+            pending.append(pool.submit(place_order, products))
+            time.sleep(ORDER_EVERY_SECONDS)
+    during = [future.result() for future in pending]
+    restock_seconds = seconds_between(run["started_at"], run["finished_at"])
     line("restocking", f"{run['status']} in {restock_seconds:.0f} s, {run['movements_replayed'] or 0:,} movements replayed")
 
     lost = sum(status != 201 for status, _ in during)
     tooks = [took for _, took in during]
     line(
         "orders during restock",
-        f"{len(during)} placed, {lost} lost   p50 {percentile(tooks, 0.5):.2f} s   p95 {percentile(tooks, 0.95):.2f} s",
+        f"{len(during)} placed, {lost} lost   p50 {percentile(tooks, 0.5)}   p95 {percentile(tooks, 0.95)}",
     )
 
     after = [place_order(products) for _ in range(CONTROL_ORDERS)]
@@ -141,6 +150,9 @@ def main() -> int:
         print(f"VERDICT  No orders lost, but {len(mismatches)} stock counts are off by {off_by} bags in total.")
         print("         Sales placed during restocking vanished from the stock counts.")
         return 1
+    if not during:
+        print("VERDICT  Restocking finished before a single order could be placed during it. Stock counts match the ledger.")
+        return 0
     print("VERDICT  No orders lost. Stock counts match the ledger.")
     return 0
 
