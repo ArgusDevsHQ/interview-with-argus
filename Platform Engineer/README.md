@@ -21,13 +21,15 @@ docker compose up -d --build
 docker compose run --rm api python -m scripts.seed
 ```
 
-- Storefront and walkthrough: http://localhost:8000. API docs at `/docs`.
+- Simulation: http://localhost:8000. It places real orders while the shop
+  restocks and tells you what was lost. Run it before and after your fix.
+  API docs at `/docs`.
 - Postgres: `localhost:5433`, user, password, and database are all `roasters`.
   `docker compose exec db psql -U roasters` also works.
 - If a port is taken, set `API_PORT` or `DB_PORT` in your environment.
 - Logs: `docker compose logs -f api worker`.
-- The stock update runs at startup and every 5 minutes. The storefront's staff
-  bar shows the countdown and lets you run one now.
+- The stock update runs at startup and every 5 minutes. Queue one now with
+  `curl -X POST localhost:8000/api/v1/stock-update`.
 - Source is bind-mounted into the containers. After editing:
   `docker compose restart api worker`.
 

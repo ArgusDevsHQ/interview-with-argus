@@ -11,7 +11,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 
 from app import config, db
-from app.api import orders, products, stock_update
+from app.api import orders, products, stock_check, stock_update
 from app.logs import configure_logging, correlation_id
 
 log = logging.getLogger("roasters.api")
@@ -34,6 +34,7 @@ app = FastAPI(title="Larkspur Roasters", lifespan=lifespan)
 app.include_router(products.router)
 app.include_router(orders.router)
 app.include_router(stock_update.router)
+app.include_router(stock_check.router)
 
 
 @app.middleware("http")
