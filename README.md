@@ -78,7 +78,7 @@ You're welcome to conclude the process at any point if you determine Argus isn't
 
 #### Communication
 
-- Asking clarifying questions via the designated Slack channel
+- Asking clarifying questions via the designated email
 - Explaining assumptions and design choices
 - Providing basic instructions for running/testing your solution
 - Discussing technical trade-offs
