@@ -55,7 +55,7 @@ day. Run it before and after your fix. It takes a couple of minutes.
 Put everything in a `FINDINGS.md` next to this file and commit your fix on a
 branch. To send it to us, either push the branch to a fork and open a pull
 request there, or email the patch (`git format-patch main`) to
-aman@getargus.tech.
+aman@getargus.tech. DO NOT OPEN A PR HERE!
 
 1. Evidence of what blocked the order, captured live rather than reasoned
    about, and the measured duration of whatever was blocking it.
