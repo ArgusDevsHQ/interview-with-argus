@@ -69,4 +69,14 @@ aman@getargus.tech.
 
 If you run out of time, tell us what you would have done next.
 
-Budget 2 to 4 hours. AI assistance is fine. You may add dependencies; say why.
+Budget 2 to 4 hours. You may add dependencies; say why.
+
+## On AI assistance
+
+Using AI for the code and the investigation is fine.
+
+`FINDINGS.md` is different. It is the deliverable we read, and it is the only
+part of this exercise that tells us how you think. A submission without it is
+disqualified. A `FINDINGS.md` that reads as generated will be treated the same
+way. Write it yourself: your evidence, your numbers, your wrong turns, in your
+own words. We will ask you to walk us through it.
