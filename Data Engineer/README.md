@@ -122,9 +122,25 @@ visualization, or comparisons with historical market reactions to similar news.
 
 ## Setup
 
+**We send the download links or archives separately with your invitation.** The
+ZIP files, real source datasets, and saved model runs are intentionally excluded
+from Git. Cloning this repository alone does not provide the real data or baseline.
+If the downloads are missing from your invitation, reply to request them.
+
+| File | Contents |
+| --- | --- |
+| `candidate-code.zip` | A frozen copy of the local app, pipeline, tests, dependencies, instructions, and labeled development examples. |
+| `candidate-data.zip` | Development and holdout company filings and exhibits, historical prices, source provenance, and the saved development model run. Holdout answers are not included. |
+| `SHA256SUMS` | Checksums for verifying the downloaded files. |
+
 Unzip `candidate-code.zip` into a working directory. Unzip `candidate-data.zip`
 into that same directory so `data/pilot/manifest.json` and
 `data/holdout/manifest.json` exist. Verify archive hashes against `SHA256SUMS`.
+
+If you use a repository checkout instead of the code ZIP, use the commit specified
+in your invitation and unzip the data ZIP inside `Data Engineer/`. Run the commands
+below from that directory. Your inference credentials are supplied privately and
+are not included in either archive.
 
 ```sh
 uv sync --frozen
