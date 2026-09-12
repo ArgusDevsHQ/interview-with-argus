@@ -300,7 +300,7 @@ def run_replay(
                             prediction, model_meta = preview_prediction(context), {"usage": None}
                         record["prediction"] = prediction.model_dump()
                         record["model_metadata"] = model_meta
-                    except Exception as exc:  # noqa: BLE001 — persist per-call failure and continue replay
+                    except Exception as exc:  # noqa: BLE001 - persist per-call failure and continue replay
                         # Do not persist SDK error bodies that may echo credentials.
                         record.update(status="error", error_type=type(exc).__name__)
                         messages = {

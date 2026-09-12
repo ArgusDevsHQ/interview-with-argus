@@ -1,7 +1,7 @@
 # Reference and comparison conventions
 
 `development.jsonl` holds one case per disclosure. Case IDs combine ticker and
-SEC accession, and finding IDs are stable within reference version 1.0.0.
+SEC accession, and finding IDs are stable within reference version 1.0.1.
 `split.json` freezes the company partition, case IDs, source fingerprints and
 reference-file hashes. The holdout hash is a commitment to a private file; it
 contains no answers.
@@ -39,3 +39,6 @@ original results for comparison. Do not silently rewrite frozen labels.
 Review status: original sources checked by the authoring assistant; independent
 human adjudication has not occurred. This limitation is part of the reference
 contract. Model outputs were not used to select these labels or the split.
+
+Version 1.0.1 shortens selected source quotations to relevant exact excerpts.
+Expected facts, classifications, case IDs, and the company split are unchanged.
