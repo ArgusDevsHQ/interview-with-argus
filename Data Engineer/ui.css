@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Libre+Caslon+Display&display=swap');
+:root { --ink: #26372f; --muted: #858b83; --line: #e5e8e1; }
+html, body, [class*="css"], .stApp, button, input { font-family: 'DM Sans', sans-serif; }
+.stApp { background: #f8f9f5; color: var(--ink); }
+.stMainBlockContainer { padding: 2rem 2.7rem 3rem; max-width: 1450px; }
+[data-testid="stHeader"] { background: transparent; height: 1.4rem; }
+[data-testid="stToolbar"] { right: .5rem; }
+.brand { font-family: 'Libre Caslon Display', Georgia, serif; font-size: 35px; line-height: 1; letter-spacing: -1.5px; padding: 0; }
+.brand span { display: block; font-family: 'DM Sans', sans-serif; font-size: 7px; letter-spacing: 2px; margin: 7px 0 0 2px; color: #717c6a; }
+.st-key-workspace_header { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 4px; }
+.st-key-workspace_header [data-testid="stSelectbox"] { max-width: 290px; }
+.eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 1.35px; color: #61715f; }
+.page-heading { padding: 16px 0 13px; }
+.page-heading h1 { font-family: 'Libre Caslon Display', Georgia, serif; font-weight: 400; font-size: clamp(30px, 3vw, 43px); letter-spacing: -.8px; line-height: 1.2; padding: 7px 0 5px; margin: 0; }
+.page-heading p { font-size: 12px; color: #7b8475; margin: 7px 0 0; }
+.ticker { display: inline-block; font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: .4px; border: 1px solid #d9dfd2; border-radius: 4px; padding: 4px 6px; vertical-align: middle; margin-left: 10px; color: #6d7965; }
+[data-testid="stVerticalBlockBorderWrapper"] { border-color: var(--line); }
+.st-key-price_panel, .st-key-filing_detail { background: #fff; border-radius: 9px; }
+.st-key-price_panel { padding: 18px 20px 13px; }
+.st-key-filing_detail { padding: 20px 22px; }
+[data-testid="stButton"] button, [data-testid="stPopover"] button, [data-testid="stLinkButton"] a { border-radius: 6px; border-color: #e0e5d9; font-size: 11px; min-height: 34px; }
+[data-testid="stPopover"] button p, [data-testid="stLinkButton"] a p { font-size: 11px; }
+.st-key-filing_feed [data-testid="stButton"] button { min-height: 69px; text-align: left; justify-content: flex-start; padding: 12px 15px; border-color: transparent; background: transparent; color: #56604e; }
+.st-key-filing_feed [data-testid="stButton"] button p { font-size: 12px; line-height: 1.7; }
+.st-key-filing_feed [data-testid="stButton"] button[kind="primary"] { background: #e8eddf; color: #263c24; border: 1px solid #d9e2ce; border-left: 3px solid #627e4f; }
+.st-key-filing_feed [data-testid="stButton"] button:hover { background: #eef1e8; }
+.chart-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; color: #788371; font-size: 10px; padding-top: 10px; border-top: 1px solid #eef0e9; }
+.chart-footer b { color: #26372f; font-size: 21px; font-weight: 500; margin-right: 10px; }
+.positive { color: #52753e; margin-right: 5px; }
+.negative { color: #a46e58; margin-right: 5px; }
+.muted { color: #9aa294; }
+.legend-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #326554; margin: 0 5px 0 13px; }
+.section-heading { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; gap: 12px; }
+.section-heading h2 { font-size: 17px; font-weight: 500; margin: 0; padding: 0; }
+.section-heading h2 span { font-size: 10px; color: #7b886f; margin-left: 8px; }
+.run-status { color: #8a8d75; font-size: 10px; }
+[data-testid="stCaptionContainer"] p { font-size: 10px; color: #8b9284; }
+.detail-title { font-family: 'Libre Caslon Display', Georgia, serif !important; font-size: 29px !important; font-weight: 400 !important; padding: 9px 0 8px !important; }
+[data-baseweb="tab-list"] { gap: 22px; }
+[data-baseweb="tab"] p { font-size: 11px; }
+.source-excerpt { white-space: pre-wrap; font-size: 12px; line-height: 1.9; color: #62705b; max-height: 230px; overflow-y: auto; margin: 12px 0 16px; padding-right: 14px; }
+.pending { padding: 22px 0; }
+.pending h3 { font-family: 'Libre Caslon Display', Georgia, serif; font-size: 28px; font-weight: 400; padding: 12px 0; }
+.pending p { color: #7a8470; font-size: 12px; line-height: 1.8; max-width: 330px; }
+[data-testid="stExpander"] { margin-top: 12px; }
+[data-testid="stExpander"] summary p { font-size: 11px; }
+@media (max-width: 900px) { .stMainBlockContainer { padding: 2rem 1.25rem; } .chart-footer { flex-wrap: wrap; } }
+@media (max-width: 640px) { .page-heading h1 { font-size: 32px; } .section-heading { align-items: flex-start; flex-direction: column; gap: 6px; } .st-key-price_panel, .st-key-filing_detail { padding: 12px; } }
+.stMain [data-testid="stVerticalBlock"] { gap: 8px; }
+.st-key-price_panel { gap: 6px !important; }
+.detail-title { margin: 0 !important; }
+[data-testid="stAppDeployButton"], [data-testid="stMainMenu"] { display: none; }
+
+.st-key-workspace_header [data-testid="stWidgetLabel"] p { font-size: 11px; font-weight: 500; color: #61715f; }
+
+/* A popover's hover help should not cover the dialog it just opened.
+   aria-describedby is present only while that trigger's tooltip is active. */
+body:has([data-testid="stTooltipHoverTarget"][aria-describedby] [data-testid="stPopoverButton"][aria-expanded="true"]) [role="tooltip"] {
+    visibility: hidden !important;
+    pointer-events: none;
+}
+
+/* Matching header menus: labels left, native chevrons at the far right. */
+:is(.st-key-workspace_header, .st-key-analysis_panel) [data-testid="stPopoverButton"] {
+    height: 36px;
+    min-height: 36px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #e0e5d9;
+    border-radius: 6px;
+    color: var(--ink);
+}
+:is(.st-key-workspace_header, .st-key-analysis_panel) [data-testid="stPopoverButton"] > div {
+    width: 100%;
+    justify-content: space-between;
+}
+:is(.st-key-workspace_header, .st-key-analysis_panel) [data-testid="stPopoverButton"] > div > div:first-child {
+    flex: 1;
+    justify-content: flex-start;
+    text-align: left;
+}
+:is(.st-key-workspace_header, .st-key-analysis_panel) [data-testid="stPopoverButton"]:hover {
+    background: #f0f1ec;
+    border-color: #b2c0b6;
+}
+:is(.st-key-workspace_header, .st-key-analysis_panel) [data-testid="stPopoverButton"]:focus-visible {
+    border-color: #28776f;
+    outline: 2px solid #96b8b1;
+    outline-offset: 2px;
+}
+
+.st-key-analysis_panel { padding: 18px 20px; background: #fff; margin-top: 12px; }
+.analysis-title { color: var(--ink); font-size: 16px; font-weight: 500; margin: 3px 0; }
+.analysis-metadata { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 11px; color: #7b8475; margin: 6px 0 12px; }
+.analysis-metadata b { color: #42513d; font-weight: 500; margin-left: 7px; }
+
+/* Keep analysis help readable as a compact, multiline card. */
+body:has(.st-key-analysis_panel [data-testid="stTooltipHoverTarget"][aria-describedby]) [role="tooltip"] {
+    max-width: min(360px, calc(100vw - 24px)) !important;
+}

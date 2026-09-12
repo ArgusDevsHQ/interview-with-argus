@@ -1,0 +1,43 @@
+{
+  "version": "1.0.0",
+  "frozen_at": "2026-09-11T19:04:55.199288+00:00",
+  "development": {
+    "dataset_path": "data/pilot",
+    "dataset_fingerprint": "d0c84c4e616f1b9bb8a5b89cac206901623993384b41c9c7aed6c8da37eb8da3",
+    "case_ids": [
+      "AMD:0000002488-24-000109",
+      "AMD:0000002488-24-000115",
+      "CRWD:0001104659-24-081571",
+      "AMD:0000002488-24-000121",
+      "AMD:0001193125-24-202457",
+      "CRWD:0001535527-24-000017",
+      "AMD:0000002488-24-000161",
+      "AMD:0000002488-24-000172",
+      "CRWD:0001535527-24-000024"
+    ],
+    "companies": [
+      "AMD",
+      "CRWD"
+    ],
+    "reference_sha256": "bfe856f2ed0fa0abfdcf7a4877d87efcacaae75ccd01c852f736916d881b8ce6"
+  },
+  "holdout": {
+    "dataset_path": "data/holdout",
+    "dataset_fingerprint": "3a95c4844cf2a8c0d421991c28b45042fbfd2844cd9f5dcae2c1cdc0f59ab756",
+    "case_ids": [
+      "NVDA:0001045810-24-000262",
+      "NVDA:0001045810-24-000300",
+      "NVDA:0001045810-24-000315"
+    ],
+    "companies": [
+      "NVDA"
+    ],
+    "reference_sha256": "4180c030be2e3451371b8e7b882315e0962854ec44647063e97e19cf97ba11dd"
+  },
+  "protocol": "Select changes on development only; freeze the selected configuration before the final holdout run. Holdout labels are retained by interviewers.",
+  "limitations": [
+    "Convenience sample: two development companies, one holdout company, three holdout disclosures.",
+    "Holdout sources are public; labels are withheld, not the underlying financial facts.",
+    "No independent human adjudication of reference labels has been performed."
+  ]
+}
