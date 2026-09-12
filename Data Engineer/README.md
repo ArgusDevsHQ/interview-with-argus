@@ -1,4 +1,9 @@
-# What's net new? — ML evaluation & data engineering
+# Data Engineer take-home — What's net new?
+
+At Argus, data engineers build and operate data pipelines, with an initial focus
+on evaluating AI outputs, detecting quality regressions, and making changes
+measurable. This exercise focuses on that quality and operations work within a
+supplied pipeline.
 
 An investor selects a company and a period on its price chart. The supplied
 application surfaces nearby 8-K disclosures and explains what was announced,
@@ -76,8 +81,10 @@ usefulness. We do not prescribe a metric, judge model, or evaluation framework.
 A fluent summary, valid JSON, or a successful run does not prove correctness.
 
 **Suggested effort: four hours.** You have the weekend to submit and may spend
-longer. Extensions count toward assessment. AI assistance is welcome; be ready
-to explain your decisions and results. Prioritize a defensible, working core.
+longer. Extensions count toward assessment. AI assistance is welcome; briefly
+describe how you used it in `FINDINGS.md`. In the follow-up walkthrough, we will
+use your code, evidence, and results to discuss your decisions and their limits.
+Prioritize a defensible, working core.
 Optional extensions include measured pipeline improvements, a monitoring
 visualization, or comparisons with historical market reactions to similar news.
 
