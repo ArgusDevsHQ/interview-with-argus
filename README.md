@@ -16,13 +16,13 @@ are retained for reference and are not current openings.
 
 After reviewing your background:
 
-1. **Introductory call — 20–30 minutes.** We discuss your interests, experience,
+1. **Introductory call (20–30 minutes).** We discuss your interests, experience,
    working preferences, and the role. There is no live coding exercise.
-2. **Take-home — unpaid.** Complete the supplied diagnostic for your role.
+2. **Take-home (unpaid).** Complete the supplied diagnostic for your role.
    Follow its README for the suggested effort and submission window.
 3. **Technical walkthrough.** We discuss your submitted code, evidence, results,
    rejected approaches, and remaining uncertainties.
-4. **Paid remote work trial — approximately four hours.** For candidates we are
+4. **Paid remote work trial (approximately four hours).** For candidates we are
    seriously considering, we agree on the scope and payment in advance. The
    trial involves real engineering work, such as reviewing a draft PR and
    collaborating toward a defensible merge decision.

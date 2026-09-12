@@ -240,7 +240,7 @@ with st.container(border=True, key="price_panel"):
         html(
             f'<div class="chart-footer"><span><b>{close_label}</b> '
             f'<span class="{direction}">{change}</span> <span class="muted">over selected dates</span>'
-            f"</span><span>{start:%b %d} — {end:%b %d, %Y} "
+            f"</span><span>{start:%b %d} to {end:%b %d, %Y} "
             '<span class="legend-dot"></span> 8-K released</span></div>'
         )
         selected_filings = dataset.filings_for_window(ticker, start, end)

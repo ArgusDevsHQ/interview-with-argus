@@ -1,4 +1,4 @@
-# Data Engineer take-home — What's net new?
+# Data Engineer take-home: What's net new?
 
 At Argus, data engineers build and operate data pipelines, with an initial focus
 on evaluating AI outputs, detecting quality regressions, and making changes
@@ -52,6 +52,8 @@ finding count, and grouping may vary. Use the facts, periods, novelty distinctio
 and evidence to define agreement. A supported extra finding can be valid even
 when absent from the references; explain how you handle it. Flag reference errors
 or ambiguity with source evidence rather than silently changing labels to fit a run.
+We assess the supporting evidence, including justified challenges to a reference;
+agreement with an incorrect reference is not the goal.
 
 "Previously known" means available in the supplied earlier documents at the
 filing's acceptance timestamp. Annual and quarterly reports and earlier 8-Ks
@@ -80,10 +82,14 @@ We assess evaluation judgment, evidence, reproducibility, and operational
 usefulness. We do not prescribe a metric, judge model, or evaluation framework.
 A fluent summary, valid JSON, or a successful run does not prove correctness.
 
-**Suggested effort: four hours.** You have the weekend to submit and may spend
-longer. Extensions count toward assessment. AI assistance is welcome; briefly
-describe how you used it in `FINDINGS.md`. In the follow-up walkthrough, we will
-use your code, evidence, and results to discuss your decisions and their limits.
+**Time window: one weekend.** Your invitation will state the submission
+deadline. We assess the full required scope described above. Optional extensions
+can add evidence but are unnecessary for a strong submission. Report your
+approximate time spent and clearly scope any unfinished work.
+
+AI assistance is welcome; briefly describe how you used it in `FINDINGS.md`.
+In the follow-up walkthrough, we will use your code, evidence, and results to
+discuss your decisions and their limits.
 Prioritize a defensible, working core.
 Optional extensions include measured pipeline improvements, a monitoring
 visualization, or comparisons with historical market reactions to similar news.
@@ -153,14 +159,6 @@ See [DATA_CONTRACT.md](DATA_CONTRACT.md) for input/output formats and
 [references/README.md](references/README.md) for reference and alignment conventions.
 `data/demo` is a fictional unit-test fixture only; it is never an investor-data
 fallback or part of the scored development/holdout set.
-
-## Preparation status
-
-A package containing `PREFLIGHT_ONLY.md` is an internal setup rehearsal, not the
-candidate handoff: it does not yet include a real baseline model run. The release
-builder refuses to produce a handoff package until a complete matching model
-baseline is supplied. References have an explicit single-reviewer status; they
-have not received independent human adjudication.
 
 ## Inspect inference access and choose a model
 

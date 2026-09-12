@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "frozen_at": "2026-09-11T19:04:55.199288+00:00",
   "development": {
     "dataset_path": "data/pilot",
@@ -19,7 +19,7 @@
       "AMD",
       "CRWD"
     ],
-    "reference_sha256": "bfe856f2ed0fa0abfdcf7a4877d87efcacaae75ccd01c852f736916d881b8ce6"
+    "reference_sha256": "890e1d52683466a82670f7d8f75b36cfead415a01fc8f3deb0c4d544fed32c8c"
   },
   "holdout": {
     "dataset_path": "data/holdout",
@@ -32,7 +32,7 @@
     "companies": [
       "NVDA"
     ],
-    "reference_sha256": "4180c030be2e3451371b8e7b882315e0962854ec44647063e97e19cf97ba11dd"
+    "reference_sha256": "1859bf0b4bfab7fe0ec6b0166a53e7ce0c2b2c5ce1d36121fc198a580ecc90e4"
   },
   "protocol": "Select changes on development only; freeze the selected configuration before the final holdout run. Holdout labels are retained by interviewers.",
   "limitations": [
