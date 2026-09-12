@@ -11,6 +11,32 @@ what changed from earlier filings, and the evidence supporting that comparison.
 We want to know how reliably it does this, whether changes improve it, and how
 we would notice degradation when most outputs receive no human review.
 
+> [!NOTE]
+> **Investing context: what does "net new" mean?**
+>
+> Investors read company announcements to understand what has changed in the
+> business and whether that changes their expectations for its future. An
+> announcement can repeat familiar facts alongside a small but important update.
+> "Net new" means identifying that update relative to what was already known.
+>
+> The documents here are public reports filed with the U.S. Securities and
+> Exchange Commission (SEC). A **10-K** is an annual report, a **10-Q** is a
+> quarterly report, and an **8-K** reports significant developments, such as a
+> leadership change or an acquisition. An 8-K may include an attached press
+> release with the useful detail. See the SEC's
+> [guide to these reports](https://www.investor.gov/introduction-investing/getting-started/researching-investments/using-edgar-research-investments).
+>
+> For a fictional example, suppose a company says in January that it expects
+> $100 million in revenue for the year. In May, it raises that expectation to
+> $120 million for the same year. The revised forecast, often called **guidance**,
+> is the change. Repeating the $120 million forecast in June adds no new forecast
+> information. These are expectations, not revenue the company has already earned.
+>
+> In this app, selecting a period on the share-price chart helps an investor
+> find potentially relevant announcements and inspect what changed. Timing alone
+> does not establish that an announcement caused the price move. For this
+> exercise, the supplied earlier filings define what was previously known.
+
 You receive the complete local pipeline, source documents, development reference
 examples, and a baseline run. Model inference is available through a funded
 LiteLLM endpoint. Everything else runs locally and can be inspected or modified.
