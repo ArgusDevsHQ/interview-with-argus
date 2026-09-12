@@ -65,9 +65,10 @@ Build a repeatable evaluation and monitoring layer around this workflow.
    change your approach after inspecting holdout results, disclose that and call
    the subsequent run exploratory.
 
-A measured improvement is encouraged, not required for a strong submission.
-Evaluation and monitoring are required. Creating a large annotation set, building
-an ingestion system, or redesigning the investor app is not the assignment.
+Prioritize a working evaluation and monitoring core, then choose how far to take
+the remaining work. A measured improvement is encouraged, not required for a
+strong submission. Creating a large annotation set, building an ingestion system,
+or redesigning the investor app is not the assignment.
 
 ## How to use the references
 
@@ -96,13 +97,14 @@ The small company sample cannot establish broad production accuracy.
 ## Deliverables
 
 - Working evaluation and monitoring code with reproducible commands.
-- Case-level evidence behind your aggregate results, and any proposed reference
-  corrections or additional labels.
+- Case-level evidence and result artifacts needed to check your claims, with
+  commands to reproduce them, and any proposed reference corrections or additional
+  labels. Link to large artifacts; there is no need to resend the supplied datasets.
 - A short `FINDINGS.md`: what you measured and why; baseline results and important
   failures; any experiments and trade-offs; what you would alert on and at what
-  thresholds; transfer results and uncertainty; and next steps with more time.
+  thresholds; transfer results if attempted and their uncertainty; and next steps.
 - Identify the reference version, baseline/run paths, selected configuration,
-  dependencies, and approximate time spent.
+  and dependencies.
 
 You may add dependencies; explain why. If you leave something unfinished, tell us
 what you would do next and what evidence you would need.
@@ -111,10 +113,12 @@ We assess evaluation judgment, evidence, reproducibility, and operational
 usefulness. We do not prescribe a metric, judge model, or evaluation framework.
 A fluent summary, valid JSON, or a successful run does not prove correctness.
 
-**Time window: one weekend.** Your invitation will state the submission
-deadline. We assess the full required scope described above. Optional extensions
-can add evidence but are unnecessary for a strong submission. Report your
-approximate time spent and clearly scope any unfinished work.
+**Time window: one weekend.** Your invitation will state the submission deadline.
+We expect most submissions to leave parts unfinished. A well-scoped, working core
+with convincing evidence counts for more than covering everything. Explain what
+you prioritized, what you left out, and why. Extra hours and optional features do
+not earn credit by themselves. Report approximate time spent for context, not as
+a score to maximize or minimize.
 
 AI assistance is welcome; briefly describe how you used it in `FINDINGS.md`.
 In the follow-up walkthrough, we will use your code, evidence, and results to
@@ -131,38 +135,54 @@ your invitation. Include what you tried and any relevant command or error, with
 credentials removed. You do not need investing experience; questions about the
 domain are welcome too.
 
-Put `FINDINGS.md` next to this README and commit your work on a branch. Push the
-branch to your fork and open a pull request there, then send us the link.
-**Do not open a pull request on the Argus repository.** Alternatively, email a
-patch made with `git format-patch <starting-commit>`, using the commit supplied
-in your invitation. If you started from the code ZIP without Git history, email
-an archive of your changed code, findings, and supporting results instead.
+**Default: submit a pull request in your own fork.** Put `FINDINGS.md` next to
+this README, commit your work on a branch, open the PR in your fork, and email
+its link to [aman@getargus.tech](mailto:aman@getargus.tech).
+**Do not open a pull request on the Argus repository.**
 
-Include the result artifacts needed to check your claims, with commands to
-reproduce them. Send large artifacts by download link; there is no need to resend
-the supplied datasets. Keep credentials out of your submission.
+If GitHub is a blocker, email one ZIP containing your code, `FINDINGS.md`, and
+supporting results instead. Keep credentials out of either submission.
 
-## Setup
+## Getting the materials
 
-**We send the download links or archives separately with your invitation.** The
-ZIP files, real source datasets, and saved model runs are intentionally excluded
-from Git. Cloning this repository alone does not provide the real data or baseline.
-If the downloads are missing from your invitation, reply to request them.
+Your hiring email includes the deadline, the starting Git commit, private download
+links for the four files below, and a separate `.env` with your personal inference
+access. **These archives and real datasets are not in Git.** Cloning the repository
+alone does not provide the data or saved baseline.
 
 | File | Contents |
 | --- | --- |
-| `candidate-code.zip` | A frozen copy of the local app, pipeline, tests, dependencies, instructions, and labeled development examples. |
 | `candidate-data.zip` | Development and holdout company filings and exhibits, historical prices, source provenance, and the saved development model run. Holdout answers are not included. |
+| `candidate-code.zip` | A frozen copy of the app, pipeline, tests, instructions, and development examples, as a backup if GitHub is a blocker. |
+| `release.json` | Release metadata, including the reference version and baseline run identifier. |
 | `SHA256SUMS` | Checksums for verifying the downloaded files. |
 
-Unzip `candidate-code.zip` into a working directory. Unzip `candidate-data.zip`
-into that same directory so `data/pilot/manifest.json` and
-`data/holdout/manifest.json` exist. Verify archive hashes against `SHA256SUMS`.
+Download all four into one folder. You do not need a Google account. Links last up to
+12 hours after preparation; the email states the exact expiry. If materials are
+missing, a link expires, or inference access fails, reply for help or fresh links.
+Once downloaded, the files remain usable throughout the assignment. Download-link
+expiry is separate from your submission deadline and inference access period.
 
-If you use a repository checkout instead of the code ZIP, use the commit specified
-in your invitation and unzip the data ZIP inside `Data Engineer/`. Run the commands
-below from that directory. Your inference credentials are supplied privately and
-are not included in either archive.
+From the download folder, verify the files before extracting them:
+
+```sh
+# macOS
+shasum -a 256 -c SHA256SUMS
+# Linux alternative
+sha256sum -c SHA256SUMS
+```
+
+## Setup
+
+Fork this repository and clone your fork. Create your working branch from the
+commit specified in the invitation. Extract `candidate-data.zip` inside
+`Data Engineer/`, then place your supplied `.env` in that directory. You should
+have `Data Engineer/data/pilot/manifest.json` and
+`Data Engineer/data/holdout/manifest.json`. Run the commands below from
+`Data Engineer/`.
+
+If GitHub is a blocker, unzip both archives into the same working directory,
+place `.env` beside its README, and use the email-ZIP submission fallback.
 
 ```sh
 uv sync --frozen
