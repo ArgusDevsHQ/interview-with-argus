@@ -11,6 +11,32 @@ what changed from earlier filings, and the evidence supporting that comparison.
 We want to know how reliably it does this, whether changes improve it, and how
 we would notice degradation when most outputs receive no human review.
 
+> [!NOTE]
+> **Investing context: what does "net new" mean?**
+>
+> Investors read company announcements to understand what has changed in the
+> business and whether that changes their expectations for its future. An
+> announcement can repeat familiar facts alongside a small but important update.
+> "Net new" means identifying that update relative to what was already known.
+>
+> The documents here are public reports filed with the U.S. Securities and
+> Exchange Commission (SEC). A **10-K** is an annual report, a **10-Q** is a
+> quarterly report, and an **8-K** reports significant developments, such as a
+> leadership change or an acquisition. An 8-K may include an attached press
+> release with the useful detail. See the SEC's
+> [guide to these reports](https://www.investor.gov/introduction-investing/getting-started/researching-investments/using-edgar-research-investments).
+>
+> For a fictional example, suppose a company says in January that it expects
+> $100 million in revenue for the year. In May, it raises that expectation to
+> $120 million for the same year. The revised forecast, often called **guidance**,
+> is the change. Repeating the $120 million forecast in June adds no new forecast
+> information. These are expectations, not revenue the company has already earned.
+>
+> In this app, selecting a period on the share-price chart helps an investor
+> find potentially relevant announcements and inspect what changed. Timing alone
+> does not establish that an announcement caused the price move. For this
+> exercise, the supplied earlier filings define what was previously known.
+
 You receive the complete local pipeline, source documents, development reference
 examples, and a baseline run. Model inference is available through a funded
 LiteLLM endpoint. Everything else runs locally and can be inspected or modified.
@@ -78,6 +104,9 @@ The small company sample cannot establish broad production accuracy.
 - Identify the reference version, baseline/run paths, selected configuration,
   dependencies, and approximate time spent.
 
+You may add dependencies; explain why. If you leave something unfinished, tell us
+what you would do next and what evidence you would need.
+
 We assess evaluation judgment, evidence, reproducibility, and operational
 usefulness. We do not prescribe a metric, judge model, or evaluation framework.
 A fluent summary, valid JSON, or a successful run does not prove correctness.
@@ -94,11 +123,46 @@ Prioritize a defensible, working core.
 Optional extensions include measured pipeline improvements, a monitoring
 visualization, or comparisons with historical market reactions to similar news.
 
+## Questions and submission
+
+If you get stuck, something is unclear, or the supplied data or inference access
+isn't working, email [aman@getargus.tech](mailto:aman@getargus.tech) or reply to
+your invitation. Include what you tried and any relevant command or error, with
+credentials removed. You do not need investing experience; questions about the
+domain are welcome too.
+
+Put `FINDINGS.md` next to this README and commit your work on a branch. Push the
+branch to your fork and open a pull request there, then send us the link.
+**Do not open a pull request on the Argus repository.** Alternatively, email a
+patch made with `git format-patch <starting-commit>`, using the commit supplied
+in your invitation. If you started from the code ZIP without Git history, email
+an archive of your changed code, findings, and supporting results instead.
+
+Include the result artifacts needed to check your claims, with commands to
+reproduce them. Send large artifacts by download link; there is no need to resend
+the supplied datasets. Keep credentials out of your submission.
+
 ## Setup
+
+**We send the download links or archives separately with your invitation.** The
+ZIP files, real source datasets, and saved model runs are intentionally excluded
+from Git. Cloning this repository alone does not provide the real data or baseline.
+If the downloads are missing from your invitation, reply to request them.
+
+| File | Contents |
+| --- | --- |
+| `candidate-code.zip` | A frozen copy of the local app, pipeline, tests, dependencies, instructions, and labeled development examples. |
+| `candidate-data.zip` | Development and holdout company filings and exhibits, historical prices, source provenance, and the saved development model run. Holdout answers are not included. |
+| `SHA256SUMS` | Checksums for verifying the downloaded files. |
 
 Unzip `candidate-code.zip` into a working directory. Unzip `candidate-data.zip`
 into that same directory so `data/pilot/manifest.json` and
 `data/holdout/manifest.json` exist. Verify archive hashes against `SHA256SUMS`.
+
+If you use a repository checkout instead of the code ZIP, use the commit specified
+in your invitation and unzip the data ZIP inside `Data Engineer/`. Run the commands
+below from that directory. Your inference credentials are supplied privately and
+are not included in either archive.
 
 ```sh
 uv sync --frozen
