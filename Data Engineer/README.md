@@ -104,6 +104,9 @@ The small company sample cannot establish broad production accuracy.
 - Identify the reference version, baseline/run paths, selected configuration,
   dependencies, and approximate time spent.
 
+You may add dependencies; explain why. If you leave something unfinished, tell us
+what you would do next and what evidence you would need.
+
 We assess evaluation judgment, evidence, reproducibility, and operational
 usefulness. We do not prescribe a metric, judge model, or evaluation framework.
 A fluent summary, valid JSON, or a successful run does not prove correctness.
@@ -119,6 +122,25 @@ discuss your decisions and their limits.
 Prioritize a defensible, working core.
 Optional extensions include measured pipeline improvements, a monitoring
 visualization, or comparisons with historical market reactions to similar news.
+
+## Questions and submission
+
+If you get stuck, something is unclear, or the supplied data or inference access
+isn't working, email [aman@getargus.tech](mailto:aman@getargus.tech) or reply to
+your invitation. Include what you tried and any relevant command or error, with
+credentials removed. You do not need investing experience; questions about the
+domain are welcome too.
+
+Put `FINDINGS.md` next to this README and commit your work on a branch. Push the
+branch to your fork and open a pull request there, then send us the link.
+**Do not open a pull request on the Argus repository.** Alternatively, email a
+patch made with `git format-patch <starting-commit>`, using the commit supplied
+in your invitation. If you started from the code ZIP without Git history, email
+an archive of your changed code, findings, and supporting results instead.
+
+Include the result artifacts needed to check your claims, with commands to
+reproduce them. Send large artifacts by download link; there is no need to resend
+the supplied datasets. Keep credentials out of your submission.
 
 ## Setup
 
