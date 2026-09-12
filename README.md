@@ -1,108 +1,47 @@
 # Interviewing at Argus
 
-Thank you for your interest in Argus! We're excited to learn more about you. This guide provides a comprehensive overview of our interview process to help you prepare effectively. While we continuously work to improve our process, it is designed to help both you and our team determine if there's a strong mutual fit.
+Our technical hiring process uses working artifacts and conversations about them
+to understand your engineering judgment and how we would work together.
 
-## The Interview Process
+## Current roles
 
-Our interview process is comprehensive and transparent, designed to help both you and us make an informed decision. We strive to make it engaging and valuable for all candidates, and we welcome your feedback throughout the process.
+- [Platform Engineer](<Platform Engineer/README.md>)
+- [Data Engineer](<Data Engineer/README.md>)
 
-The process typically consists of three main stages:
+Start with your role's README. It defines the task, setup, time budget,
+deliverables, and submission instructions. Historical exercises in `archive/`
+are retained for reference and are not current openings.
 
-1. Initial Conversation
-   - A founding team member will have an introductory call with you
-   - While we often reach out to candidates directly, we welcome applications through all channels
-  
-2. Technical Screening
-   - A take-home screening based on the role.
-   - This particular repo contains screening tasks for all roles.
+## The process
 
-3. Technical Interview
-   - If there's strong mutual interest, we'll invite you to spend a day working with our team
-   - We'll cover your travel expenses and arrange the visit at your convenience (if it's onsite)
-   - The day includes hands-on technical work with our team
+After reviewing your background:
 
-4. Final Discussion
-   - We'll review compensation and logistics
-   - Since we discuss key details throughout the process, there shouldn't be any unexpected elements at this stage
+1. **Introductory call — 20–30 minutes.** We discuss your interests, experience,
+   working preferences, and the role. There is no live coding exercise.
+2. **Take-home — unpaid.** Complete the supplied diagnostic for your role.
+   Follow its README for the suggested effort and submission window.
+3. **Technical walkthrough.** We discuss your submitted code, evidence, results,
+   rejected approaches, and remaining uncertainties.
+4. **Paid remote work trial — approximately four hours.** For candidates we are
+   seriously considering, we agree on the scope and payment in advance. The
+   trial involves real engineering work, such as reviewing a draft PR and
+   collaborating toward a defensible merge decision.
+5. **Offer discussion.** We confirm responsibilities, compensation, and logistics.
 
-You're welcome to conclude the process at any point if you determine Argus isn't the right fit for you. Similarly, we'll be upfront if we don't see a strong match, respecting everyone's time.
+You can withdraw at any point. We will communicate next steps and whether we
+intend to continue. For questions, reply to your invitation email.
 
-## Preparation
+## What we assess
 
-### Technical Practice Guidelines
+- **Measured before concluding.** Support your diagnosis and conclusions with
+  captured evidence and reproducible checks.
+- **Named what you rejected.** Explain approaches you tried or considered,
+  why you rejected them, and the trade-offs behind your chosen approach.
+- **Quantified with conditions stated.** Give measurements with the workload,
+  configuration, and limitations needed to interpret them.
+- **Scoped what you left undone.** Identify remaining risks, uncertainty, and
+  the next work you would prioritize.
 
-#### General Programming Skills
-
-- Focus on building a complete project from scratch (estimated time: 2-4 hours)
-- Example project: Create a CLI tool that generates ASCII art or fractals
-- Recommended Python framework: Typer
-- Key areas to practice:
-  - Object-oriented programming (classes and inheritance)
-  - Python idioms (list/dict comprehensions)
-  - Control flow and basic syntax
-  
-#### Machine Learning Focus
-
-- Essential skills:
-  - PyTorch and/or NumPy proficiency
-  - Tensor operations (dimension manipulation, argmax, etc.)
-  - Understanding of backpropagation (both practical implementation and theory)
-- Note: While theoretical knowledge is valuable, our focus is on practical application
-
-#### Frontend Development
-
-- Recommended: Build a sample project using Next.js
-- Note: While Next.js knowledge is beneficial, it's not a requirement
-- We value:
-  - Technical reasoning and discussion
-  - Ability to evaluate and critique technical choices
-  - Well-supported alternative approaches
-
-## Evaluation Criteria
-
-### Core Focus Areas
-
-#### Technical Understanding & Problem Solving
-
-- Understanding and addressing the core challenges of problems
-- Developing functional, well-reasoned solutions
-- Demonstrating awareness of trade-offs in technical decisions
-- Ability to explain your thought process and decisions
-
-#### Code Quality
-
-- Clear, logical code structure and organization
-- Appropriate use of abstractions and design patterns
-- Functional implementation that can be demonstrated
-- Basic performance considerations (not specifically O(n) complexity)
-
-#### Communication
-
-- Asking clarifying questions via the designated email
-- Explaining assumptions and design choices
-- Providing basic instructions for running/testing your solution
-- Discussing technical trade-offs
-
-### Opportunities to Excel
-
-- Feel free to showcase expertise in specific areas:
-  - Specialized libraries
-  - Threading and async programming
-  - NumPy optimization
-  - Other relevant technical skills
-- We value seeing your strengths in action during the practical work session
-
-### What We Don't Require
-
-- Complete unit test coverage
-- Comprehensive type hints
-- Extensive performance optimizations
-- Detailed analysis or benchmarking
-- Perfect knowledge of all topics
-
-### Important Notes
-
-- Focus on demonstrating your problem-solving approach rather than memorized knowledge
-- We evaluate both technical skills and how you work through new challenges
-- Questions and clarifications are viewed positively
-- Documentation of intentionally skipped optimizations is welcome
+AI assistance is expected and welcome. Follow your role's README for disclosure
+and authorship requirements, and be prepared to explain and verify everything
+you submit.
