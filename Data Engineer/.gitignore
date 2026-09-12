@@ -1,0 +1,31 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+!.env.candidate.example
+!.env.server.example
+private/
+runs/
+artifacts/
+data/sec-pilot/
+data/market-pilot/
+data/prices-source/
+data/pilot/
+data/release/
+data/msft-check/
+data/nvda-check/
+*.egg-info/
+
+# This is a public candidate starter repository. Keep interviewer materials local.
+authoring/*
+!authoring/__init__.py
+!authoring/fetch_sec.py
+!authoring/import_prices.py
+gateway/
+
+# Distribute real corpora and saved runs separately; only unit-test data goes in Git.
+data/*
+!data/demo/

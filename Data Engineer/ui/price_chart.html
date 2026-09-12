@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="plotly.min.js"></script>
+<style>html,body{margin:0;background:transparent;font-family:Arial,sans-serif}#chart{width:100%;height:220px}.draglayer{cursor:crosshair}</style>
+</head>
+<body>
+<div id="chart" role="region" aria-label="Price history. Click a filing marker or drag to select dates."></div>
+<script>
+const chart = document.getElementById('chart');
+const send = (type, payload = {}) => window.parent.postMessage({isStreamlitMessage:true,type,...payload}, '*');
+let ready = false;
+let rendering = Promise.resolve();
+const publish = event => send('streamlit:setComponentValue', {
+  value: {...event, event_id: crypto.randomUUID()}, dataType:'json'
+});
+window.addEventListener('message', event => {
+  if (event.source !== window.parent || event.data.type !== 'streamlit:render') return;
+  const args = event.data.args;
+  rendering = rendering.then(async () => {
+    const figure = JSON.parse(args.figure);
+    await Plotly.react(chart, figure.data, figure.layout, {
+      displayModeBar:false, responsive:true, scrollZoom:false, doubleClick:false
+    });
+    if (!ready) {
+      chart.on('plotly_click', event => {
+        const point = event.points?.find(p => p.customdata);
+        if (point) publish({kind:'filing', filing_id:point.customdata});
+      });
+      chart.on('plotly_selected', event => {
+        const range = event?.range?.x;
+        if (range) publish({kind:'range', start:range[0], end:range[1]});
+      });
+      ready = true;
+    }
+    send('streamlit:setFrameHeight', {height:220});
+  });
+});
+new ResizeObserver(() => { if (ready) Plotly.Plots.resize(chart); }).observe(document.body);
+send('streamlit:componentReady', {apiVersion:1});
+send('streamlit:setFrameHeight', {height:220});
+</script>
+</body>
+</html>

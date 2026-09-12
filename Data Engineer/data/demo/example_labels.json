@@ -1,0 +1,36 @@
+{
+  "kind": "fictional_illustration",
+  "review_status": "author_generated_not_human_reviewed",
+  "examples": [
+    {
+      "id": "example-changed",
+      "filing_id": "guidance",
+      "classification": "changed",
+      "claim": "Annual revenue outlook rose from $90\u2013100m to $105\u2013115m.",
+      "current": {
+        "document_id": "guidance",
+        "quote": "Aster Systems now expects annual revenue between $105 million and $115 million."
+      },
+      "prior": {
+        "document_id": "quarterly",
+        "quote": "Aster Systems expects annual revenue between $90 million and $100 million."
+      },
+      "rationale": "Both the prior and replacement ranges are explicitly stated."
+    },
+    {
+      "id": "example-repeated",
+      "filing_id": "repeat",
+      "classification": "repeated",
+      "claim": "The $105\u2013115m outlook was already disclosed on September 3.",
+      "current": {
+        "document_id": "repeat",
+        "quote": "Aster Systems now expects annual revenue between $105 million and $115 million."
+      },
+      "prior": {
+        "document_id": "guidance",
+        "quote": "Aster Systems now expects annual revenue between $105 million and $115 million."
+      },
+      "rationale": "Compare to prior 8-Ks, not just the annual/quarterly baseline."
+    }
+  ]
+}

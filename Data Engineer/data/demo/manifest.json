@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "dataset_id": "fictional-ui-demo-v1",
+  "title": "Aster Systems \u00b7 fictional workflow demo",
+  "kind": "fictional",
+  "description": "Authored documents and invented prices for interface testing only.",
+  "replay_start": "2024-09-03",
+  "replay_end": "2024-09-13",
+  "documents": [
+    {
+      "id": "annual",
+      "filing_id": "annual",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "10-K",
+      "role": "primary",
+      "available_at": "2024-03-01T15:00:00Z",
+      "path": "documents/annual.html",
+      "source_url": "",
+      "sha256": "384dd7f7c816b9d4712dcc6ecc07deced96845f8e6bc886bf8d71482882d2af0"
+    },
+    {
+      "id": "quarterly",
+      "filing_id": "quarterly",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "10-Q",
+      "role": "primary",
+      "available_at": "2024-08-08T20:30:00Z",
+      "path": "documents/quarterly.html",
+      "source_url": "",
+      "sha256": "f0506c8ae3d1b1007f61df0e07e9401deb093057f3da5698706909c14ecdc8de"
+    },
+    {
+      "id": "guidance",
+      "filing_id": "guidance",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "8-K",
+      "role": "primary",
+      "available_at": "2024-09-03T20:30:00Z",
+      "path": "documents/guidance.html",
+      "source_url": "",
+      "sha256": "3b333a17a20045cc814c7f008ea208c1c630bf139d5a32b7911a91a53643cccb"
+    },
+    {
+      "id": "guidance-release",
+      "filing_id": "guidance",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "8-K",
+      "role": "exhibit",
+      "available_at": "2024-09-03T20:30:00Z",
+      "path": "documents/guidance-release.html",
+      "source_url": "",
+      "sha256": "97821bd377a9b01ab19cb0947ef69b86bcf78a777176970d0fc89ef33507315d"
+    },
+    {
+      "id": "repeat",
+      "filing_id": "repeat",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "8-K",
+      "role": "primary",
+      "available_at": "2024-09-05T13:00:00Z",
+      "path": "documents/repeat.html",
+      "source_url": "",
+      "sha256": "a4b980dcac44306f5446b8d4f7c79a96be77270bdc523b28f885a15385e8e8e2"
+    },
+    {
+      "id": "ceo",
+      "filing_id": "ceo",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "8-K",
+      "role": "primary",
+      "available_at": "2024-09-06T21:00:00Z",
+      "path": "documents/ceo.html",
+      "source_url": "",
+      "sha256": "638e6a0a87c5e28c134baa56ab3caa29bece5263692c31a3d878b75dc721e8b6"
+    },
+    {
+      "id": "facility",
+      "filing_id": "facility",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "8-K",
+      "role": "primary",
+      "available_at": "2024-09-10T14:00:00Z",
+      "path": "documents/facility.html",
+      "source_url": "",
+      "sha256": "dc6ac4977361e22fa1547d9adb16c8ec155e389bd4f4d7f319be53428a34aeb0"
+    },
+    {
+      "id": "future-quarterly",
+      "filing_id": "future-quarterly",
+      "ticker": "ASTER-DEMO",
+      "company": "Aster Systems \u00b7 fictional",
+      "form": "10-Q",
+      "role": "primary",
+      "available_at": "2024-11-07T21:30:00Z",
+      "path": "documents/future-quarterly.html",
+      "source_url": "",
+      "sha256": "44b15d9bc7639413d6ebc60edd9fe3cf7c2b749d59d13bf376f1ffd694ab2980"
+    }
+  ],
+  "default_run": "cache",
+  "prices": {
+    "path": "prices.csv",
+    "source": "Authored UI fixture",
+    "source_url": "",
+    "redistribution_basis": "Original fictional fixture authored for this repository",
+    "adjustment": "Fictional units; no corporate actions",
+    "currency": "USD",
+    "kind": "fictional"
+  }
+}
